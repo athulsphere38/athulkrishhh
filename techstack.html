@@ -288,6 +288,9 @@
             cursor: crosshair;
             box-shadow: 0 0 12px rgba(192, 132, 252, 0.15);
             transition: all 0.25s ease;
+            touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .life-widget-container:hover {
@@ -304,6 +307,8 @@
         .life-widget-container canvas {
             width: 100%;
             height: 100%;
+            display: block;
+            touch-action: none;
         }
 
         /* PAGE CONTENT */
@@ -379,43 +384,127 @@
 
         /* RESPONSIVE MOBILE NAVIGATION */
         @media (max-width: 850px) {
-            body { flex-direction: column; }
+            html, body {
+                overflow-x: hidden;
+                width: 100%;
+            }
+
+            body {
+                flex-direction: column;
+            }
+
             aside {
                 width: 100%;
                 border-right: none;
                 border-bottom: 1px solid var(--border-color);
-                padding: 28px 24px 20px 24px;
+                padding: 24px 20px 18px 20px;
+                background: var(--bg-sidebar);
+                box-sizing: border-box;
             }
+
             .sidebar-brand-name {
                 font-size: 1.85rem;
                 font-weight: 800;
+                letter-spacing: -0.5px;
+                margin-bottom: 6px;
             }
+
+            .sidebar-brand-sub {
+                font-size: 0.92rem;
+                color: var(--accent-cyan);
+                margin-bottom: 16px;
+            }
+
             .sidebar-tree {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 8px 12px;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px 10px;
                 margin-top: 14px;
                 padding-top: 14px;
                 border-top: 1px dashed var(--border-color);
+                width: 100%;
+                box-sizing: border-box;
             }
+
             .tree-item {
-                padding: 6px 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 8px 12px;
                 background: var(--bg-card);
                 border: 1px solid var(--border-color);
                 border-radius: 6px;
-                font-size: 0.82rem;
+                font-size: 0.85rem;
+                text-align: center;
+                cursor: pointer;
+                width: 100%;
+                box-sizing: border-box;
             }
-            .tree-item::before { content: ""; }
+
+            .tree-item::before {
+                content: "";
+                display: none;
+            }
+
             .tree-item.active {
                 border-color: var(--accent-cyan);
                 color: var(--accent-cyan);
                 background: var(--bg-card-hover);
                 transform: none;
             }
-            header { padding-bottom: 16px; margin-bottom: 24px; }
-            .header-profile { display: none; }
-            main { padding: 20px 24px; }
+
+            .sidebar-friends {
+                margin-top: 14px;
+                padding-top: 12px;
+                border-top: 1px solid var(--border-color);
+            }
+
+            header {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                padding-bottom: 16px;
+                margin-bottom: 24px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .header-profile {
+                display: none;
+            }
+
+            header > div:last-child {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .life-widget-container {
+                flex: 1;
+                min-width: 0;
+                width: 100%;
+                height: 52px;
+                box-sizing: border-box;
+            }
+
+            main {
+                padding: 20px 16px;
+                width: 100%;
+                box-sizing: border-box;
+                overflow-x: hidden;
+            }
+
+            .fixed-site-badge {
+                position: fixed;
+                bottom: 16px;
+                right: 16px;
+                z-index: 9999;
+                transform: scale(0.85);
+                transform-origin: bottom right;
+            }
         }
     </style>
 </head>
@@ -544,7 +633,46 @@
                 grid = next;
                 frameCount++;
             }
-            setInterval(drawLife, 40);
+            setInterval(drawLife, 35);
+
+            // Hyper-sensitive mouse and touch kinetic cell cluster injector
+            function injectKineticCells(clientX, clientY) {
+                if (!lifeCanvas) return;
+                const rect = lifeCanvas.getBoundingClientRect();
+                if (rect.width === 0 || rect.height === 0) return;
+                const relX = clientX - rect.left;
+                const relY = clientY - rect.top;
+                const c = Math.floor((relX / rect.width) * cols);
+                const r = Math.floor((relY / rect.height) * rows);
+                for (let dr = -3; dr <= 3; dr++) {
+                    for (let dc = -3; dc <= 3; dc++) {
+                        const nr = (r + dr + rows) % rows;
+                        const nc = (c + dc + cols) % cols;
+                        if (Math.random() > 0.08) {
+                            grid[nr][nc] = 1;
+                        }
+                    }
+                }
+            }
+
+            const parentWidget = lifeCanvas.parentElement || lifeCanvas;
+            parentWidget.addEventListener('mousemove', (e) => injectKineticCells(e.clientX, e.clientY));
+            parentWidget.addEventListener('mousedown', (e) => injectKineticCells(e.clientX, e.clientY));
+            parentWidget.addEventListener('click', (e) => injectKineticCells(e.clientX, e.clientY));
+
+            function handleLifeTouch(e) {
+                if (e.cancelable) e.preventDefault();
+                if (e.touches && e.touches.length > 0) {
+                    for (let i = 0; i < e.touches.length; i++) {
+                        injectKineticCells(e.touches[i].clientX, e.touches[i].clientY);
+                    }
+                }
+            }
+
+            parentWidget.addEventListener('touchstart', handleLifeTouch, { passive: false });
+            parentWidget.addEventListener('touchmove', handleLifeTouch, { passive: false });
+            lifeCanvas.addEventListener('touchstart', handleLifeTouch, { passive: false });
+            lifeCanvas.addEventListener('touchmove', handleLifeTouch, { passive: false });
         }
 
         // --- CURSORMIGI (PARASYTE PET THAT RUNS & CHASES MOUSE CURSOR LIKE CURSORCAT) ---
@@ -592,6 +720,39 @@
                     });
                 }
             });
+
+            const handleTouch = (e) => {
+                if (e.touches && e.touches[0]) {
+                    mouseX = e.touches[0].clientX;
+                    mouseY = e.touches[0].clientY;
+                    if (Math.random() > 0.4) {
+                        particles.push({
+                            x: migiX,
+                            y: migiY,
+                            size: Math.random() * 3 + 1,
+                            alpha: 1,
+                            color: ['#c084fc', '#e879f9', '#fbbf24'][Math.floor(Math.random() * 3)]
+                        });
+                    }
+                }
+            };
+            window.addEventListener('touchmove', handleTouch, { passive: true });
+            window.addEventListener('touchstart', (e) => {
+                handleTouch(e);
+                state = 'POUNCING';
+                pounceTimer = 1.0;
+                for (let i = 0; i < 10; i++) {
+                    particles.push({
+                        x: mouseX,
+                        y: mouseY,
+                        vx: (Math.random() - 0.5) * 6,
+                        vy: (Math.random() - 0.5) * 6,
+                        size: Math.random() * 4 + 2,
+                        alpha: 1,
+                        color: ['#e879f9', '#c084fc', '#4ade80', '#ffffff'][Math.floor(Math.random() * 4)]
+                    });
+                }
+            }, { passive: true });
 
             window.addEventListener('mousedown', () => {
                 state = 'POUNCING';
