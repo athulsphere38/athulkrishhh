@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes & Blog // Athul Krishna A</title>
+    <meta name="description" content="Notes and Blog section of Athul Krishna A (athulkrishhh). Technical writeups, articles, and insights.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #0b0716;
+            --bg-card: #140d24;
+            --bg-card-hover: #1c1332;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #2d1c4d;
+            --accent-cyan: #c084fc;
+            --accent-green: #4ade80;
+            --font-mono: 'Fira Code', monospace;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        body.light-mode {
+            --bg-color: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --accent-cyan: #7c3aed;
+            --accent-green: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            min-height: 100vh;
+            display: flex;
+            position: relative;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        /* LEFT SIDEBAR */
+        aside {
+            width: 250px;
+            border-right: 1px solid var(--border-color);
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            transition: background-color 0.25s ease, border-color 0.25s ease;
+        }
+
+        .sidebar-brand-name {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-brand-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .sidebar-tree {
+            list-style: none;
+            margin-top: 16px;
+        }
+
+        .tree-item {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding: 6px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .tree-item:hover, .tree-item.active {
+            color: var(--text-main);
+            transform: translateX(4px);
+        }
+
+        .tree-item::before {
+            content: "├─ ";
+            color: var(--text-muted);
+        }
+
+        .tree-item:hover::before, .tree-item.active::before {
+            color: var(--accent-cyan);
+        }
+
+        /* FRIENDS SECTION IN BOTTOM LEFT SIDEBAR */
+        .sidebar-friends {
+            margin-top: auto;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .friends-title {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-family: var(--font-mono);
+            letter-spacing: 0.03em;
+            text-transform: lowercase;
+            opacity: 0.75;
+        }
+
+        .friends-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .friend-badge-link {
+            display: inline-block;
+            transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.4);
+            line-height: 0;
+        }
+
+        .friend-badge-link:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 4px 12px rgba(192, 132, 252, 0.2);
+            opacity: 0.95;
+        }
+
+        .friend-badge-img {
+            width: 102px;
+            height: 36px;
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            object-fit: fill;
+        }
+
+        .site-badge-link {
+            display: inline-block;
+            transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.4);
+            line-height: 0;
+        }
+
+        .site-badge-link:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 4px 16px rgba(192, 132, 252, 0.3);
+            opacity: 0.98;
+        }
+
+        .site-badge-img {
+            width: 102px;
+            height: 36px;
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            object-fit: fill;
+        }
+
+        .fixed-site-badge {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            border-radius: 6px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .fixed-site-badge:hover {
+            transform: translateY(-3px) scale(1.04);
+            box-shadow: 0 10px 28px rgba(192, 132, 252, 0.4);
+            border-color: var(--accent-cyan);
+        }
+
+        /* MAIN CONTENT */
+        main {
+            flex: 1;
+            padding: 32px 48px;
+            max-width: 1050px;
+            transition: background-color 0.25s ease;
+        }
+
+        /* HEADER BAR */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 24px;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--border-color);
+            transition: border-color 0.25s ease;
+        }
+
+        .header-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        .profile-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s ease;
+        }
+
+        .header-nav a:hover, .header-nav a.active {
+            color: var(--accent-cyan);
+        }
+
+        .icon-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 6px 10px;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            color: var(--text-main);
+            border-color: var(--accent-cyan);
+            background: var(--bg-card-hover);
+        }
+
+        /* GAME OF LIFE CANVAS WIDGET HEADER COMPONENT */
+        .life-widget-container {
+            width: 480px;
+            max-width: 100%;
+            height: 72px;
+            background: #000000;
+            border: 1.5px solid rgba(192, 132, 252, 0.45);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            cursor: crosshair;
+            box-shadow: 0 0 12px rgba(192, 132, 252, 0.15);
+            transition: all 0.25s ease;
+        }
+
+        .life-widget-container:hover {
+            border-color: #c084fc;
+            box-shadow: 0 0 25px rgba(192, 132, 252, 0.5), inset 0 0 15px rgba(192, 132, 252, 0.2);
+        }
+
+        body.light-mode .life-widget-container {
+            background: #f1f5f9;
+            border: 1.5px solid #94a3b8;
+            box-shadow: 0 2px 10px rgba(148, 163, 184, 0.25);
+        }
+
+        .life-widget-container canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* PAGE CONTENT */
+        .page-heading {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .page-sub {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        /* COMING SOON CARD */
+        .coming-soon-card {
+            background: var(--bg-card);
+            border: 1px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 60px 32px;
+            text-align: center;
+            margin-top: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .coming-soon-card:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 8px 30px rgba(192, 132, 252, 0.12);
+        }
+
+        .coming-soon-icon {
+            font-size: 2.8rem;
+            margin-bottom: 16px;
+            display: inline-block;
+            animation: floatBounce 3s ease-in-out infinite;
+        }
+
+        @keyframes floatBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .coming-soon-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .coming-soon-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            background: rgba(192, 132, 252, 0.15);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            font-size: 0.78rem;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 14px;
+        }
+
+        .coming-soon-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            max-width: 460px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* RESPONSIVE MOBILE NAVIGATION */
+        @media (max-width: 850px) {
+            body { flex-direction: column; }
+            aside {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 28px 24px 20px 24px;
+            }
+            .sidebar-brand-name {
+                font-size: 1.85rem;
+                font-weight: 800;
+            }
+            .sidebar-tree {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 8px 12px;
+                margin-top: 14px;
+                padding-top: 14px;
+                border-top: 1px dashed var(--border-color);
+            }
+            .tree-item {
+                padding: 6px 14px;
+                background: var(--bg-card);
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                font-size: 0.82rem;
+            }
+            .tree-item::before { content: ""; }
+            .tree-item.active {
+                border-color: var(--accent-cyan);
+                color: var(--accent-cyan);
+                background: var(--bg-card-hover);
+                transform: none;
+            }
+            header { padding-bottom: 16px; margin-bottom: 24px; }
+            .header-profile { display: none; }
+            main { padding: 20px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LEFT SIDEBAR -->
+    <aside>
+        <div class="sidebar-brand-name">athul krishna A</div>
+        <div class="sidebar-brand-sub">cse student // developer</div>
+        <ul class="sidebar-tree">
+            <li class="tree-item" onclick="window.location.href='athulkrishhh.html'">home</li>
+            <li class="tree-item" onclick="window.location.href='projects.html'">projects</li>
+            <li class="tree-item active">notes & blog</li>
+            <li class="tree-item" onclick="window.location.href='techstack.html'">tech stack</li>
+        </ul>
+
+        <!-- FRIENDS SECTION IN BOTTOM LEFT -->
+        <div class="sidebar-friends">
+            <div class="friends-title">friends section</div>
+            <div class="friends-badges">
+                <a href="https://namishh.com" target="_blank" class="friend-badge-link" title="namishh.com">
+                    <img src="https://namishh.com/static/images/button_nam.png" alt="namishh" class="friend-badge-img">
+                </a>
+                <a href="https://haarshmap.github.io/" target="_blank" class="friend-badge-link" title="harsha">
+                    <img src="harsha-badge.png" alt="harsha" class="friend-badge-img">
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main>
+        <!-- HEADER BAR -->
+        <header style="justify-content: flex-end;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <button class="icon-btn" id="migi-btn" title="Toggle Migi Companion (ON/OFF)" style="position: relative;">
+                    👾
+                    <span id="migi-status-dot" style="position: absolute; bottom: 2px; right: 2px; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 6px #4ade80;"></span>
+                </button>
+                <button class="icon-btn" id="theme-btn" title="Toggle Theme">☀️</button>
+                <div class="life-widget-container" title="Interactive Conway's Game of Life Grid">
+                    <canvas id="life-canvas"></canvas>
+                </div>
+            </div>
+        </header>
+
+        <!-- NOTES & BLOG PAGE CONTENT -->
+        <div class="page-heading">notes & blog</div>
+        <div class="page-sub">technical writeups, engineering tutorials, and personal thoughts.</div>
+
+        <div class="coming-soon-card">
+            <div class="coming-soon-title">Notes & Blog Posts</div>
+            <div class="coming-soon-desc">
+                to be entered soon... articles on Python, Django REST frameworks, TypeScript, and system architecture are currently being drafted.
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- 1. LIGHT / DARK MODE THEME TOGGLE ---
+        const themeBtn = document.getElementById('theme-btn');
+        if (themeBtn) {
+            themeBtn.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                const isLight = document.body.classList.contains('light-mode');
+                themeBtn.innerText = isLight ? '🌙' : '☀️';
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            });
+            if (localStorage.getItem('theme') === 'light') {
+                document.body.classList.add('light-mode');
+                themeBtn.innerText = '🌙';
+            }
+        }
+
+        // --- 2. GAME OF LIFE CANVAS ANIMATION ---
+        const lifeCanvas = document.getElementById('life-canvas');
+        if (lifeCanvas) {
+            const lCtx = lifeCanvas.getContext('2d');
+            const cols = 64, rows = 24;
+            let grid = [];
+            let frameCount = 0;
+
+            function createGrid() {
+                grid = [];
+                for (let r = 0; r < rows; r++) {
+                    grid[r] = [];
+                    for (let c = 0; c < cols; c++) {
+                        grid[r][c] = Math.random() > 0.65 ? 1 : 0;
+                    }
+                }
+            }
+            createGrid();
+
+            function drawLife() {
+                lifeCanvas.width = lifeCanvas.clientWidth || 160;
+                lifeCanvas.height = lifeCanvas.clientHeight || 80;
+                const cellW = lifeCanvas.width / cols;
+                const cellH = lifeCanvas.height / rows;
+                const isLight = document.body.classList.contains('light-mode');
+
+                lCtx.fillStyle = isLight ? 'rgba(226, 232, 240, 0.45)' : 'rgba(0, 0, 0, 0.45)';
+                lCtx.fillRect(0, 0, lifeCanvas.width, lifeCanvas.height);
+
+                let next = [];
+                for (let r = 0; r < rows; r++) {
+                    next[r] = [];
+                    for (let c = 0; c < cols; c++) {
+                        if (grid[r][c] === 1) {
+                            lCtx.fillStyle = isLight ? '#0284c7' : '#c084fc';
+                            lCtx.fillRect(c * cellW + 0.8, r * cellH + 0.8, cellW - 1.2, cellH - 1.2);
+                        }
+                        let neighbors = 0;
+                        for (let i = -1; i <= 1; i++) {
+                            for (let j = -1; j <= 1; j++) {
+                                if (i === 0 && j === 0) continue;
+                                const nr = (r + i + rows) % rows;
+                                const nc = (c + j + cols) % cols;
+                                if (grid[nr] && grid[nr][nc]) neighbors += grid[nr][nc];
+                            }
+                        }
+                        if (grid[r][c] === 1 && (neighbors < 2 || neighbors > 3)) next[r][c] = 0;
+                        else if (grid[r][c] === 0 && neighbors === 3) next[r][c] = 1;
+                        else next[r][c] = grid[r][c];
+                    }
+                }
+                grid = next;
+                frameCount++;
+            }
+            setInterval(drawLife, 40);
+        }
+
+        // --- CURSORMIGI (PARASYTE PET THAT RUNS & CHASES MOUSE CURSOR LIKE CURSORCAT) ---
+        function initCursorMigi() {
+            if (!document.body || document.getElementById('cursor-migi-canvas')) return;
+
+            const mCanvas = document.createElement('canvas');
+            mCanvas.id = 'cursor-migi-canvas';
+            mCanvas.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:999999;';
+            document.body.appendChild(mCanvas);
+
+            const mctx = mCanvas.getContext('2d');
+            let width = mCanvas.width = window.innerWidth;
+            let height = mCanvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = mCanvas.width = window.innerWidth;
+                height = mCanvas.height = window.innerHeight;
+            });
+
+            let mouseX = width / 2;
+            let mouseY = height / 2;
+            let migiX = mouseX - 60;
+            let migiY = mouseY - 60;
+            let vx = 0, vy = 0;
+            let runCycle = 0;
+            let state = 'IDLE';
+            let blinkTimer = 0;
+            let isBlinking = false;
+            let pounceTimer = 0;
+
+            const particles = [];
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+
+                if (Math.hypot(e.movementX, e.movementY) > 5 && Math.random() > 0.5) {
+                    particles.push({
+                        x: migiX,
+                        y: migiY,
+                        size: Math.random() * 3 + 1,
+                        alpha: 1,
+                        color: ['#c084fc', '#e879f9', '#fbbf24'][Math.floor(Math.random() * 3)]
+                    });
+                }
+            });
+
+            window.addEventListener('mousedown', () => {
+                state = 'POUNCING';
+                pounceTimer = 1.0;
+                for (let i = 0; i < 10; i++) {
+                    particles.push({
+                        x: mouseX,
+                        y: mouseY,
+                        vx: (Math.random() - 0.5) * 6,
+                        vy: (Math.random() - 0.5) * 6,
+                        size: Math.random() * 4 + 2,
+                        alpha: 1,
+                        color: ['#e879f9', '#c084fc', '#4ade80', '#ffffff'][Math.floor(Math.random() * 4)]
+                    });
+                }
+            });
+
+            const migiBtn = document.getElementById('migi-btn');
+            const migiDot = document.getElementById('migi-status-dot');
+            let isMigiActive = localStorage.getItem('migi_enabled') !== 'false';
+
+            function updateMigiVisibility() {
+                if (isMigiActive) {
+                    mCanvas.style.display = 'block';
+                    if (migiDot) {
+                        migiDot.style.background = '#4ade80';
+                        migiDot.style.boxShadow = '0 0 6px #4ade80';
+                    }
+                    if (migiBtn) migiBtn.style.opacity = '1';
+                } else {
+                    mCanvas.style.display = 'none';
+                    if (migiDot) {
+                        migiDot.style.background = '#ef4444';
+                        migiDot.style.boxShadow = 'none';
+                    }
+                    if (migiBtn) migiBtn.style.opacity = '0.5';
+                }
+            }
+
+            if (migiBtn) {
+                migiBtn.addEventListener('click', () => {
+                    isMigiActive = !isMigiActive;
+                    localStorage.setItem('migi_enabled', isMigiActive ? 'true' : 'false');
+                    updateMigiVisibility();
+                });
+            }
+            updateMigiVisibility();
+
+            function updateMigi() {
+                if (!isMigiActive) {
+                    requestAnimationFrame(updateMigi);
+                    return;
+                }
+                mctx.clearRect(0, 0, width, height);
+
+                const targetFollowX = mouseX + 18;
+                const targetFollowY = mouseY + 40;
+
+                const dx = targetFollowX - migiX;
+                const dy = targetFollowY - migiY;
+                const dist = Math.hypot(dx, dy);
+
+                if (state === 'POUNCING') {
+                    pounceTimer -= 0.08;
+                    if (pounceTimer <= 0) state = 'IDLE';
+                } else if (dist > 6) {
+                    state = 'RUNNING';
+                    const speed = Math.min(dist * 0.045, 3.5);
+                    migiX += Math.cos(Math.atan2(dy, dx)) * speed;
+                    migiY += Math.sin(Math.atan2(dy, dx)) * speed;
+                    runCycle += 0.12;
+                } else {
+                    state = 'IDLE';
+                    runCycle += 0.03;
+                }
+
+                blinkTimer++;
+                if (blinkTimer > 150) {
+                    isBlinking = true;
+                    if (blinkTimer > 162) {
+                        isBlinking = false;
+                        blinkTimer = 0;
+                    }
+                }
+
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.x += p.vx || 0;
+                    p.y += p.vy || 0;
+                    p.alpha -= 0.04;
+                    if (p.alpha <= 0) {
+                        particles.splice(i, 1);
+                        continue;
+                    }
+                    mctx.save();
+                    mctx.globalAlpha = p.alpha;
+                    mctx.fillStyle = p.color;
+                    mctx.beginPath();
+                    mctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    mctx.fill();
+                    mctx.restore();
+                }
+
+                const swayAngle = Math.sin(runCycle * 0.8) * 0.08;
+                mctx.save();
+                mctx.translate(migiX, migiY);
+                mctx.rotate(swayAngle);
+
+                if (state === 'POUNCING') {
+                    const stretch = 1 + Math.sin(pounceTimer * Math.PI) * 0.35;
+                    mctx.scale(1, stretch);
+                }
+
+                mctx.save();
+                mctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+                mctx.filter = 'blur(4px)';
+                mctx.beginPath();
+                mctx.ellipse(0, 16, 14, 6, 0, 0, Math.PI * 2);
+                mctx.fill();
+                mctx.restore();
+
+                const step1 = Math.sin(runCycle) * 9;
+                const step2 = Math.cos(runCycle) * 9;
+
+                mctx.strokeStyle = '#c49a75';
+                mctx.lineWidth = 3;
+                mctx.lineCap = 'round';
+
+                mctx.beginPath();
+                mctx.moveTo(-10, -5);
+                mctx.lineTo(-17, -11 + step1);
+                mctx.moveTo(10, -5);
+                mctx.lineTo(17, -11 - step1);
+                mctx.stroke();
+
+                mctx.beginPath();
+                mctx.moveTo(-8, 12);
+                mctx.lineTo(-15, 17 + step2);
+                mctx.moveTo(8, 12);
+                mctx.lineTo(15, 17 - step2);
+                mctx.stroke();
+
+                const bodyGrad = mctx.createRadialGradient(-2, -4, 2, 0, 0, 20);
+                bodyGrad.addColorStop(0, '#fff3c4');
+                bodyGrad.addColorStop(0.35, '#fbe4c8');
+                bodyGrad.addColorStop(0.85, '#e2bd9a');
+                bodyGrad.addColorStop(1, '#c49a75');
+
+                mctx.beginPath();
+                mctx.moveTo(-14, 16);
+                mctx.bezierCurveTo(-18, 4, -14, -10, -6, -18);
+                mctx.bezierCurveTo(-2, -26, 2, -26, 6, -18);
+                mctx.bezierCurveTo(14, -10, 18, 4, 14, 16);
+                mctx.bezierCurveTo(6, 22, -6, 22, -14, 16);
+                mctx.closePath();
+
+                mctx.fillStyle = bodyGrad;
+                mctx.fill();
+                mctx.strokeStyle = '#9a6c47';
+                mctx.lineWidth = 1.6;
+                mctx.stroke();
+
+                const stalkFlex = Math.sin(runCycle * 0.8) * 3;
+                mctx.beginPath();
+                mctx.moveTo(-3, -18);
+                mctx.bezierCurveTo(-4 + stalkFlex, -26, -2 + stalkFlex, -34, 0, -38);
+                mctx.bezierCurveTo(2 + stalkFlex, -34, 4 + stalkFlex, -26, 3, -18);
+                mctx.fillStyle = '#fbe4c8';
+                mctx.fill();
+                mctx.strokeStyle = '#9a6c47';
+                mctx.lineWidth = 1.4;
+                mctx.stroke();
+
+                const eyeY = -40;
+                const eyeR = 9.5;
+
+                const relDx = mouseX - migiX;
+                const relDy = mouseY - (migiY + eyeY);
+                const eyeDist = Math.hypot(relDx, relDy) || 1;
+                const lookX = (relDx / eyeDist) * 3.8;
+                const lookY = eyeY + (relDy / eyeDist) * 3.8;
+
+                mctx.beginPath();
+                if (isBlinking) {
+                    mctx.ellipse(0, eyeY, eyeR, 1.2, 0, 0, Math.PI * 2);
+                    mctx.fillStyle = '#9a6c47';
+                    mctx.fill();
+                } else {
+                    mctx.ellipse(0, eyeY, eyeR, eyeR * 0.95, 0, 0, Math.PI * 2);
+                    mctx.fillStyle = '#ffffff';
+                    mctx.fill();
+                    mctx.strokeStyle = '#5c3a21';
+                    mctx.lineWidth = 1.5;
+                    mctx.stroke();
+
+                    const irisGrad = mctx.createRadialGradient(lookX - 1, lookY - 1, 1, lookX, lookY, 5);
+                    irisGrad.addColorStop(0, '#f59e0b');
+                    irisGrad.addColorStop(0.6, '#b45309');
+                    irisGrad.addColorStop(1, '#451a03');
+
+                    mctx.beginPath();
+                    mctx.arc(lookX, lookY, state === 'POUNCING' ? 5.5 : 4.2, 0, Math.PI * 2);
+                    mctx.fillStyle = irisGrad;
+                    mctx.fill();
+
+                    mctx.beginPath();
+                    mctx.arc(lookX, lookY, state === 'POUNCING' ? 2.8 : 2.0, 0, Math.PI * 2);
+                    mctx.fillStyle = '#000000';
+                    mctx.fill();
+
+                    mctx.beginPath();
+                    mctx.arc(lookX - 1.5, lookY - 1.5, 1.4, 0, Math.PI * 2);
+                    mctx.fillStyle = '#ffffff';
+                    mctx.fill();
+                }
+
+                mctx.beginPath();
+                mctx.arc(0, 2, 4, 0.2, Math.PI - 0.2, false);
+                mctx.strokeStyle = '#7c2d12';
+                mctx.lineWidth = 1.4;
+                mctx.stroke();
+
+                mctx.beginPath();
+                mctx.arc(-7, 2, 2.2, 0, Math.PI * 2);
+                mctx.arc(7, 2, 2.2, 0, Math.PI * 2);
+                mctx.fillStyle = 'rgba(244, 63, 94, 0.35)';
+                mctx.fill();
+
+                mctx.restore();
+
+                requestAnimationFrame(updateMigi);
+            }
+
+            updateMigi();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initCursorMigi);
+        } else {
+            initCursorMigi();
+        }
+    </script>
+    <!-- FIXED BOTTOM RIGHT CORNER SITE BADGE -->
+    <a href="athulkrishhh.html" class="site-badge-link fixed-site-badge" title="athul website badge">
+        <img src="athul-badge.png" alt="athul website badge" class="site-badge-img">
+    </a>
+</body>
+</html>

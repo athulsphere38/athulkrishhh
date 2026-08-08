@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects // Athul Krishna A</title>
+    <meta name="description"
+        content="Projects portfolio of Athul Krishna A (athulkrishhh). Featuring full-stack web applications and interactive games.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #0b0716;
+            --bg-card: #140d24;
+            --bg-card-hover: #1c1332;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #2d1c4d;
+            --accent-cyan: #c084fc;
+            --accent-green: #4ade80;
+            --font-mono: 'Fira Code', monospace;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        body.light-mode {
+            --bg-color: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --accent-cyan: #7c3aed;
+            --accent-green: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            min-height: 100vh;
+            display: flex;
+            position: relative;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        /* LEFT SIDEBAR */
+        aside {
+            width: 250px;
+            border-right: 1px solid var(--border-color);
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            transition: background-color 0.25s ease, border-color 0.25s ease;
+        }
+
+        .sidebar-tree {
+            list-style: none;
+            margin-top: 16px;
+        }
+
+        .tree-item {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding: 6px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .tree-item:hover,
+        .tree-item.active {
+            color: var(--text-main);
+            transform: translateX(4px);
+        }
+
+        .tree-item::before {
+            content: "├─ ";
+            color: var(--text-muted);
+        }
+
+        .tree-item:hover::before,
+        .tree-item.active::before {
+            color: var(--accent-cyan);
+        }
+
+        /* MAIN CONTENT */
+        main {
+            flex: 1;
+            padding: 32px 48px;
+            max-width: 1050px;
+            transition: background-color 0.25s ease;
+        }
+
+        /* FRIENDS SECTION IN BOTTOM LEFT SIDEBAR */
+        .sidebar-friends {
+            margin-top: auto;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .friends-title {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-family: var(--font-mono);
+            letter-spacing: 0.03em;
+            text-transform: lowercase;
+            opacity: 0.75;
+        }
+
+        .friends-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .friend-badge-link {
+            display: inline-block;
+            transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.4);
+            line-height: 0;
+        }
+
+        .friend-badge-link:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 4px 12px rgba(192, 132, 252, 0.2);
+            opacity: 0.95;
+        }
+
+        .friend-badge-img {
+            width: 102px;
+            height: 36px;
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            object-fit: fill;
+        }
+
+        .site-badge-link {
+            display: inline-block;
+            transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.4);
+            line-height: 0;
+        }
+
+        .site-badge-link:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 4px 16px rgba(192, 132, 252, 0.3);
+            opacity: 0.98;
+        }
+
+        .site-badge-img {
+            width: 102px;
+            height: 36px;
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            object-fit: fill;
+        }
+
+        .fixed-site-badge {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            border-radius: 6px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .fixed-site-badge:hover {
+            transform: translateY(-3px) scale(1.04);
+            box-shadow: 0 10px 28px rgba(192, 132, 252, 0.4);
+            border-color: var(--accent-cyan);
+        }
+
+        /* HEADER BAR */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 24px;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--border-color);
+            transition: border-color 0.25s ease;
+        }
+
+        .header-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        .profile-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s ease;
+        }
+
+        .header-nav a:hover,
+        .header-nav a.active {
+            color: var(--accent-cyan);
+        }
+
+        .icon-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 6px 10px;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            color: var(--text-main);
+            border-color: var(--accent-cyan);
+            background: var(--bg-card-hover);
+        }
+
+        /* GAME OF LIFE CANVAS WIDGET HEADER COMPONENT */
+        .life-widget-container {
+            width: 480px;
+            max-width: 100%;
+            height: 72px;
+            background: #000000;
+            border: 1.5px solid rgba(192, 132, 252, 0.45);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            cursor: crosshair;
+            box-shadow: 0 0 12px rgba(192, 132, 252, 0.15);
+            transition: all 0.25s ease;
+        }
+
+        .life-widget-container:hover {
+            border-color: #c084fc;
+            box-shadow: 0 0 25px rgba(192, 132, 252, 0.5), inset 0 0 15px rgba(192, 132, 252, 0.2);
+        }
+
+        body.light-mode .life-widget-container {
+            background: #f1f5f9;
+            border: 1.5px solid #94a3b8;
+            box-shadow: 0 2px 10px rgba(148, 163, 184, 0.25);
+        }
+
+        body.light-mode .life-widget-container:hover {
+            border-color: #0284c7;
+            box-shadow: 0 0 20px rgba(2, 132, 199, 0.35), inset 0 0 10px rgba(2, 132, 199, 0.1);
+        }
+
+        .life-widget-label {
+            position: absolute;
+            bottom: 4px;
+            right: 8px;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            color: var(--accent-cyan);
+            background: rgba(0, 0, 0, 0.6);
+            padding: 2px 6px;
+            border-radius: 3px;
+            pointer-events: none;
+        }
+
+        body.light-mode .life-widget-label {
+            color: #4c1d95;
+            background: rgba(255, 255, 255, 0.75);
+        }
+
+        .life-widget-container canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* PROJECTS SECTION */
+        .projects-heading {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .projects-sub {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            margin-bottom: 48px;
+        }
+
+        .proj-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .proj-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-cyan);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .proj-thumb {
+            height: 170px;
+            width: 100%;
+            background: #0a0a0a;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .proj-thumb svg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .proj-info {
+            padding: 24px;
+        }
+
+        .proj-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .proj-title a,
+        .proj-title a:visited,
+        .subtle-link,
+        .subtle-link:visited {
+            color: #c084fc !important;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .proj-title a:hover,
+        .subtle-link:hover {
+            color: #e879f9 !important;
+            text-decoration: underline;
+        }
+
+        .proj-desc {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .proj-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.78rem;
+            color: var(--accent-cyan);
+        }
+
+        /* MODALS */
+        .cmd-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cmd-modal-overlay.active {
+            display: flex;
+        }
+
+        .sidebar-brand-name {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-brand-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        /* RESPONSIVE MOBILE HERO & NAVIGATION */
+        @media (max-width: 850px) {
+            body {
+                flex-direction: column;
+            }
+
+            aside {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 28px 24px 20px 24px;
+                background: var(--bg-sidebar);
+            }
+
+            .sidebar-brand-name {
+                font-size: 1.85rem;
+                font-weight: 800;
+                letter-spacing: -0.5px;
+                margin-bottom: 6px;
+            }
+
+            .sidebar-brand-sub {
+                font-size: 0.92rem;
+                color: var(--accent-cyan);
+                margin-bottom: 16px;
+            }
+
+            .sidebar-tree {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 8px 12px;
+                margin-top: 14px;
+                padding-top: 14px;
+                border-top: 1px dashed var(--border-color);
+            }
+
+            .tree-item {
+                padding: 6px 14px;
+                background: var(--bg-card);
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                font-size: 0.82rem;
+            }
+
+            .tree-item::before {
+                content: "";
+            }
+
+            .tree-item.active {
+                border-color: var(--accent-cyan);
+                color: var(--accent-cyan);
+                background: var(--bg-card-hover);
+                transform: none;
+            }
+
+            header {
+                padding-bottom: 16px;
+                margin-bottom: 24px;
+            }
+
+            .header-profile {
+                display: none;
+            }
+
+            main {
+                padding: 20px 24px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LEFT SIDEBAR / MOBILE HERO HEADER -->
+    <aside>
+        <div class="sidebar-brand-name">
+            athul krishna A
+        </div>
+        <div class="sidebar-brand-sub">
+            cse student // developer
+        </div>
+        <ul class="sidebar-tree">
+            <li class="tree-item" onclick="window.location.href='athulkrishhh.html'">home</li>
+            <li class="tree-item active">projects</li>
+            <li class="tree-item" onclick="window.location.href='notes.html'">notes & blog</li>
+            <li class="tree-item" onclick="window.location.href='techstack.html'">tech stack</li>
+        </ul>
+
+        <!-- FRIENDS SECTION IN BOTTOM LEFT -->
+        <div class="sidebar-friends">
+            <div class="friends-title">friends section</div>
+            <div class="friends-badges">
+                <a href="https://namishh.com" target="_blank" class="friend-badge-link" title="namishh.com">
+                    <img src="https://namishh.com/static/images/button_nam.png" alt="namishh" class="friend-badge-img">
+                </a>
+                <a href="https://haarshmap.github.io/" target="_blank" class="friend-badge-link" title="harsha">
+                    <img src="harsha-badge.png" alt="harsha" class="friend-badge-img">
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main>
+        <!-- HEADER BAR -->
+        <header style="justify-content: flex-end;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <button class="icon-btn" id="migi-btn" title="Toggle Migi Companion (ON/OFF)"
+                    style="position: relative;">
+                    👾
+                    <span id="migi-status-dot"
+                        style="position: absolute; bottom: 2px; right: 2px; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 6px #4ade80;"></span>
+                </button>
+                <button class="icon-btn" id="theme-btn" title="Toggle Theme">☀️</button>
+
+                <!-- TOP RIGHT CONWAY'S GAME OF LIFE CANVAS WIDGET -->
+                <div class="life-widget-container" title="Interactive Conway's Game of Life Grid">
+                    <canvas id="life-canvas"></canvas>
+                </div>
+            </div>
+        </header>
+
+        <!-- PROJECTS SHOWCASE -->
+        <section>
+            <h1 class="projects-heading">projects // showcase</h1>
+            <p class="projects-sub">Featured full-stack web applications and interactive mini-games engineered by Athul
+                Krishna A.</p>
+
+            <div class="projects-grid">
+                <!-- Project 1: Countdown to New Year 2027 -->
+                <div class="proj-card" onclick="window.open('https://newyrcount-count.vercel.app/', '_blank')">
+                    <div class="proj-thumb">
+                        <svg viewBox="0 0 350 160" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="350" height="160" fill="#424543" />
+                            <text x="175" y="36" fill="#9bb3d6" font-family="-apple-system, sans-serif" font-size="11"
+                                font-weight="700" letter-spacing="2.5" text-anchor="middle">COUNTDOWN TO NEW YEAR</text>
+                            <text x="175" y="78" fill="#e8b2b5" font-family="-apple-system, sans-serif" font-size="34"
+                                font-weight="900" letter-spacing="1" text-anchor="middle">2027</text>
+                            <rect x="0" y="100" width="350" height="60" fill="#323533" />
+                            <text x="45" y="126" fill="#4ade80" font-family="sans-serif" font-size="17"
+                                font-weight="800" text-anchor="middle">150</text>
+                            <text x="45" y="142" fill="#525854" font-family="sans-serif" font-size="7.5"
+                                font-weight="700" letter-spacing="1" text-anchor="middle">DAYS</text>
+                            <text x="132" y="126" fill="#4ade80" font-family="sans-serif" font-size="17"
+                                font-weight="800" text-anchor="middle">12</text>
+                            <text x="132" y="142" fill="#525854" font-family="sans-serif" font-size="7.5"
+                                font-weight="700" letter-spacing="1" text-anchor="middle">HOURS</text>
+                            <text x="218" y="126" fill="#4ade80" font-family="sans-serif" font-size="17"
+                                font-weight="800" text-anchor="middle">19</text>
+                            <text x="218" y="142" fill="#525854" font-family="sans-serif" font-size="7.5"
+                                font-weight="700" letter-spacing="1" text-anchor="middle">MINUTES</text>
+                            <text x="305" y="126" fill="#4ade80" font-family="sans-serif" font-size="17"
+                                font-weight="800" text-anchor="middle">35</text>
+                            <text x="305" y="142" fill="#525854" font-family="sans-serif" font-size="7.5"
+                                font-weight="700" letter-spacing="1" text-anchor="middle">SECONDS</text>
+                        </svg>
+                    </div>
+                    <div class="proj-info">
+                        <div class="proj-title"><a href="https://newyrcount-count.vercel.app/" target="_blank"
+                                class="subtle-link">Countdown to New Year 2027</a></div>
+                        <div class="proj-desc">Live real-time countdown timer web application displaying remaining days,
+                            hours, minutes, and seconds to New Year 2027 with dynamic time unit tracking.</div>
+                    </div>
+                </div>
+
+                <!-- Project 2: Cyber Arcade & Web Games Hub (Arcade X) -->
+                <div class="proj-card" onclick="window.open('https://arcade-x-sepia.vercel.app/', '_blank')">
+                    <div class="proj-thumb">
+                        <svg viewBox="0 0 350 160" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="350" height="160" fill="#0b0f19" />
+                            <g transform="translate(10, 10)">
+                                <rect width="76" height="66" rx="5" fill="#141a29" stroke="#1e273b" stroke-width="1" />
+                                <rect x="4" y="4" width="68" height="30" rx="3" fill="#2d0b38" />
+                                <rect x="26" y="9" width="20" height="18" rx="3" fill="#ff0055" />
+                                <text x="36" y="21" fill="#fff" font-family="sans-serif" font-size="7" font-weight="800"
+                                    text-anchor="middle">2048</text>
+                                <text x="6" y="45" fill="#fff" font-family="sans-serif" font-size="7.5"
+                                    font-weight="700">Cyber 2048</text>
+                                <rect x="6" y="50" width="60" height="11" rx="5.5" fill="#00d2ff" />
+                                <text x="36" y="58" fill="#000" font-family="sans-serif" font-size="5.5"
+                                    font-weight="800" text-anchor="middle">Play 2048 Now ➔</text>
+                            </g>
+                            <g transform="translate(94, 10)">
+                                <rect width="76" height="66" rx="5" fill="#141a29" stroke="#1e273b" stroke-width="1" />
+                                <rect x="4" y="4" width="68" height="30" rx="3" fill="#082b24" />
+                                <path d="M 12 19 L 36 19 L 36 25 L 56 25" stroke="#00ffcc" stroke-width="3" fill="none"
+                                    stroke-linecap="round" />
+                                <text x="6" y="45" fill="#fff" font-family="sans-serif" font-size="7.5"
+                                    font-weight="700">Snake 2099</text>
+                                <rect x="6" y="50" width="60" height="11" rx="5.5" fill="#00d2ff" />
+                                <text x="36" y="58" fill="#000" font-family="sans-serif" font-size="5.5"
+                                    font-weight="800" text-anchor="middle">Play Snake Now ➔</text>
+                            </g>
+                            <g transform="translate(178, 10)">
+                                <rect width="76" height="66" rx="5" fill="#141a29" stroke="#1e273b" stroke-width="1" />
+                                <rect x="4" y="4" width="68" height="30" rx="3" fill="#1d0a2d" />
+                                <path d="M 14 30 L 38 8 L 62 30" stroke="#ff00aa" stroke-width="1.5" fill="none" />
+                                <polygon points="38,15 32,24 44,24" fill="#00ffff" />
+                                <text x="6" y="45" fill="#fff" font-family="sans-serif" font-size="7.5"
+                                    font-weight="700">Neon Velocity</text>
+                                <rect x="6" y="50" width="60" height="11" rx="5.5" fill="#00d2ff" />
+                                <text x="36" y="58" fill="#000" font-family="sans-serif" font-size="5.5"
+                                    font-weight="800" text-anchor="middle">Play Racing Now ➔</text>
+                            </g>
+                            <g transform="translate(262, 10)">
+                                <rect width="76" height="66" rx="5" fill="#141a29" stroke="#1e273b" stroke-width="1" />
+                                <rect x="4" y="4" width="68" height="30" rx="3" fill="#111a36" />
+                                <line x1="14" y1="28" x2="62" y2="10" stroke="#00ffff" stroke-width="2" />
+                                <line x1="14" y1="10" x2="62" y2="28" stroke="#ff0055" stroke-width="2" />
+                                <text x="6" y="45" fill="#fff" font-family="sans-serif" font-size="7.5"
+                                    font-weight="700">Cyber Clash</text>
+                                <rect x="6" y="50" width="60" height="11" rx="5.5" fill="#00d2ff" />
+                                <text x="36" y="58" fill="#000" font-family="sans-serif" font-size="5.5"
+                                    font-weight="800" text-anchor="middle">Play Clash Now ➔</text>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="proj-info">
+                        <div class="proj-title"><a href="https://arcade-x-sepia.vercel.app/" target="_blank"
+                                class="subtle-link">Cyber Arcade & Mini-Games Hub (Arcade X)</a></div>
+                        <div class="proj-desc">Futuristic retro web gaming suite featuring classic mini-games including
+                            Cyber 2048, Snake 2099, Neon Racing, Cyber Clash, and Hyper Pong.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- LIVE COUNTDOWN TO NEW YEAR 2027 MODAL -->
+    <div class="cmd-modal-overlay" id="countdown-modal">
+        <div
+            style="background: #424543; border: 1px solid #5a5e5b; border-radius: 12px; padding: 32px; width: 90%; max-width: 600px; text-align: center; color: #fff; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.8);">
+            <button onclick="document.getElementById('countdown-modal').classList.remove('active')"
+                style="position: absolute; top: 16px; right: 16px; background: none; border: none; color: #aaa; font-size: 1.5rem; cursor: pointer;">✕</button>
+            <div
+                style="color: #9bb3d6; font-family: monospace, sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: 3px; margin-bottom: 12px;">
+                COUNTDOWN TO NEW YEAR</div>
+            <div style="color: #e8b2b5; font-size: 4rem; font-weight: 900; letter-spacing: 2px; margin-bottom: 24px;">
+                2027</div>
+            <div
+                style="background: #323533; border-radius: 8px; padding: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+                <div>
+                    <div id="live-days" style="color: #4ade80; font-size: 2.2rem; font-weight: 800;">150</div>
+                    <div
+                        style="color: #88908a; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; margin-top: 4px;">
+                        DAYS</div>
+                </div>
+                <div>
+                    <div id="live-hours" style="color: #4ade80; font-size: 2.2rem; font-weight: 800;">12</div>
+                    <div
+                        style="color: #88908a; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; margin-top: 4px;">
+                        HOURS</div>
+                </div>
+                <div>
+                    <div id="live-mins" style="color: #4ade80; font-size: 2.2rem; font-weight: 800;">19</div>
+                    <div
+                        style="color: #88908a; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; margin-top: 4px;">
+                        MINUTES</div>
+                </div>
+                <div>
+                    <div id="live-secs" style="color: #4ade80; font-size: 2.2rem; font-weight: 800;">35</div>
+                    <div
+                        style="color: #88908a; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; margin-top: 4px;">
+                        SECONDS</div>
+                </div>
+            </div>
+            <div style="margin-top: 20px; font-size: 0.82rem; color: #a0a8a2;">✨ Real-time dynamic clock tracking time
+                remaining until Jan 1, 2027</div>
+        </div>
+    </div>
+
+    <!-- CYBER ARCADE HUB MODAL -->
+    <div class="cmd-modal-overlay" id="arcade-modal">
+        <div
+            style="background: #0b0f19; border: 1px solid #1e273b; border-radius: 12px; padding: 28px; width: 95%; max-width: 800px; color: #fff; position: relative; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.9);">
+            <button onclick="document.getElementById('arcade-modal').classList.remove('active')"
+                style="position: absolute; top: 16px; right: 16px; background: none; border: none; color: #aaa; font-size: 1.5rem; cursor: pointer;">✕</button>
+            <div
+                style="font-size: 1.3rem; font-weight: 700; color: #00d2ff; margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+                🎮 Cyber Arcade & Mini-Games Hub</div>
+            <div style="font-size: 0.85rem; color: #8892b0; margin-bottom: 20px;">Select a web mini-game to launch
+                preview:</div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px;">
+                <div style="background: #141a29; border: 1px solid #1e273b; border-radius: 8px; padding: 14px; text-align: center; cursor: pointer;"
+                    onclick="alert('Launching Cyber 2048...')">
+                    <div
+                        style="background: #2d0b38; height: 70px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 800; color: #ff0055; margin-bottom: 10px;">
+                        2048</div>
+                    <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 4px;">Cyber 2048</div>
+                    <div style="font-size: 0.75rem; color: #ffc107; margin-bottom: 8px;">★ 4.9 · Sci-Fi Puzzle</div>
+                    <div
+                        style="background: #00d2ff; color: #000; font-weight: 700; padding: 5px; border-radius: 20px; font-size: 0.75rem;">
+                        Play Now ➔</div>
+                </div>
+
+                <div style="background: #141a29; border: 1px solid #1e273b; border-radius: 8px; padding: 14px; text-align: center; cursor: pointer;"
+                    onclick="alert('Launching Cyber Snake 2099...')">
+                    <div
+                        style="background: #082b24; height: 70px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 800; color: #00ffcc; margin-bottom: 10px;">
+                        🐍</div>
+                    <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 4px;">Snake 2099</div>
+                    <div style="font-size: 0.75rem; color: #ffc107; margin-bottom: 8px;">★ 4.8 · Retro Arcade</div>
+                    <div
+                        style="background: #00d2ff; color: #000; font-weight: 700; padding: 5px; border-radius: 20px; font-size: 0.75rem;">
+                        Play Now ➔</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        function updateCountdown() {
+            const targetDate = new Date('January 1, 2027 00:00:00').getTime();
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                const dEl = document.getElementById('live-days');
+                const hEl = document.getElementById('live-hours');
+                const mEl = document.getElementById('live-mins');
+                const sEl = document.getElementById('live-secs');
+
+                if (dEl) dEl.innerText = days;
+                if (hEl) hEl.innerText = String(hours).padStart(2, '0');
+                if (mEl) mEl.innerText = String(minutes).padStart(2, '0');
+                if (sEl) sEl.innerText = String(seconds).padStart(2, '0');
+            }
+        }
+        setInterval(updateCountdown, 1000);
+
+        // Conway Game of Life
+        const lifeCanvas = document.getElementById('life-canvas');
+        const lCtx = lifeCanvas.getContext('2d');
+        const cols = 64, rows = 24;
+        let grid = [];
+        let frameCount = 0;
+
+        function createGrid() {
+            grid = [];
+            for (let r = 0; r < rows; r++) {
+                grid[r] = [];
+                for (let c = 0; c < cols; c++) {
+                    grid[r][c] = Math.random() > 0.65 ? 1 : 0;
+                }
+            }
+        }
+        createGrid();
+
+        function spawnGlider(r, c) {
+            const glider = [[0, 1, 0], [0, 0, 1], [1, 1, 1]];
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    const nr = (r + i + rows) % rows;
+                    const nc = (c + j + cols) % cols;
+                    grid[nr][nc] = glider[i][j];
+                }
+            }
+        }
+
+        function drawLife() {
+            if (!lifeCanvas) return;
+            lifeCanvas.width = lifeCanvas.clientWidth || 160;
+            lifeCanvas.height = lifeCanvas.clientHeight || 80;
+            const cellW = lifeCanvas.width / cols;
+            const cellH = lifeCanvas.height / rows;
+
+            const isLight = document.body.classList.contains('light-mode');
+
+            lCtx.fillStyle = isLight ? 'rgba(226, 232, 240, 0.45)' : 'rgba(0, 0, 0, 0.45)';
+            lCtx.fillRect(0, 0, lifeCanvas.width, lifeCanvas.height);
+
+            let liveCount = 0;
+            let changesCount = 0;
+            let next = [];
+
+            lCtx.shadowBlur = 8;
+            lCtx.shadowColor = isLight ? '#0284c7' : '#c084fc';
+
+            for (let r = 0; r < rows; r++) {
+                next[r] = [];
+                for (let c = 0; c < cols; c++) {
+                    if (grid[r][c] === 1) {
+                        liveCount++;
+                        if (isLight) {
+                            lCtx.fillStyle = (r + c + frameCount) % 3 === 0 ? '#0284c7' : ((r + frameCount) % 2 === 0 ? '#0369a1' : '#2563eb');
+                        } else {
+                            lCtx.fillStyle = (r + c + frameCount) % 3 === 0 ? '#e879f9' : ((r + frameCount) % 2 === 0 ? '#c084fc' : '#818cf8');
+                        }
+                        lCtx.fillRect(c * cellW + 0.8, r * cellH + 0.8, cellW - 1.2, cellH - 1.2);
+                    }
+
+                    let neighbors = 0;
+                    for (let i = -1; i <= 1; i++) {
+                        for (let j = -1; j <= 1; j++) {
+                            if (i === 0 && j === 0) continue;
+                            const nr = (r + i + rows) % rows;
+                            const nc = (c + j + cols) % cols;
+                            if (grid[nr] && grid[nr][nc]) neighbors += grid[nr][nc];
+                        }
+                    }
+
+                    if (grid[r][c] === 1 && (neighbors < 2 || neighbors > 3)) {
+                        next[r][c] = 0;
+                        changesCount++;
+                    } else if (grid[r][c] === 0 && neighbors === 3) {
+                        next[r][c] = 1;
+                        changesCount++;
+                    } else {
+                        next[r][c] = grid[r][c];
+                    }
+                }
+            }
+
+            grid = next;
+            lCtx.shadowBlur = 0;
+            frameCount++;
+
+            if (frameCount % 20 === 0) {
+                const gr = Math.floor(Math.random() * (rows - 4));
+                const gc = Math.floor(Math.random() * (cols - 4));
+                spawnGlider(gr, gc);
+            }
+
+            if (frameCount % 12 === 0 || changesCount < 4 || liveCount < 20) {
+                for (let k = 0; k < 6; k++) {
+                    const rr = Math.floor(Math.random() * rows);
+                    const rc = Math.floor(Math.random() * cols);
+                    grid[rr][rc] = grid[rr][rc] === 1 ? 0 : 1;
+                }
+            }
+        }
+        setInterval(drawLife, 35);
+
+        // Hyper-sensitive mouse and touch kinetic cell cluster injector
+        function injectKineticCells(clientX, clientY) {
+            const rect = lifeCanvas.getBoundingClientRect();
+            const c = Math.floor(((clientX - rect.left) / rect.width) * cols);
+            const r = Math.floor(((clientY - rect.top) / rect.height) * rows);
+            for (let dr = -2; dr <= 2; dr++) {
+                for (let dc = -2; dc <= 2; dc++) {
+                    const nr = (r + dr + rows) % rows;
+                    const nc = (c + dc + cols) % cols;
+                    if (Math.random() > 0.12) {
+                        grid[nr][nc] = 1;
+                    }
+                }
+            }
+        }
+
+        const parentWidget = lifeCanvas.parentElement;
+        if (parentWidget) {
+            parentWidget.addEventListener('mousemove', (e) => injectKineticCells(e.clientX, e.clientY));
+            parentWidget.addEventListener('touchmove', (e) => {
+                if (e.touches && e.touches[0]) injectKineticCells(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+            parentWidget.addEventListener('touchstart', (e) => {
+                if (e.touches && e.touches[0]) injectKineticCells(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+        }
+
+        // --- LIGHT / DARK MODE THEME TOGGLE ---
+        const themeBtn = document.getElementById('theme-btn');
+        if (themeBtn) {
+            themeBtn.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                const isLight = document.body.classList.contains('light-mode');
+                themeBtn.innerText = isLight ? '🌙' : '☀️';
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            });
+            if (localStorage.getItem('theme') === 'light') {
+                document.body.classList.add('light-mode');
+                themeBtn.innerText = '🌙';
+            }
+        }
+
+        // --- CURSORMIGI (PARASYTE PET THAT RUNS & CHASES MOUSE CURSOR LIKE CURSORCAT) ---
+        function initCursorMigi() {
+            if (!document.body || document.getElementById('cursor-migi-canvas')) return;
+
+            const mCanvas = document.createElement('canvas');
+            mCanvas.id = 'cursor-migi-canvas';
+            mCanvas.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:999999;';
+            document.body.appendChild(mCanvas);
+
+            const mctx = mCanvas.getContext('2d');
+            let width = mCanvas.width = window.innerWidth;
+            let height = mCanvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = mCanvas.width = window.innerWidth;
+                height = mCanvas.height = window.innerHeight;
+            });
+
+            let mouseX = width / 2;
+            let mouseY = height / 2;
+            let migiX = mouseX - 60;
+            let migiY = mouseY - 60;
+            let vx = 0, vy = 0;
+            let runCycle = 0;
+            let state = 'IDLE';
+            let facingAngle = 0;
+            let blinkTimer = 0;
+            let isBlinking = false;
+            let pounceTimer = 0;
+
+            const particles = [];
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+
+                if (Math.hypot(e.movementX, e.movementY) > 5 && Math.random() > 0.5) {
+                    particles.push({
+                        x: migiX,
+                        y: migiY,
+                        size: Math.random() * 3 + 1,
+                        alpha: 1,
+                        color: ['#c084fc', '#e879f9', '#fbbf24'][Math.floor(Math.random() * 3)]
+                    });
+                }
+            });
+
+            window.addEventListener('mousedown', () => {
+                state = 'POUNCING';
+                pounceTimer = 1.0;
+                for (let i = 0; i < 10; i++) {
+                    particles.push({
+                        x: mouseX,
+                        y: mouseY,
+                        vx: (Math.random() - 0.5) * 6,
+                        vy: (Math.random() - 0.5) * 6,
+                        size: Math.random() * 4 + 2,
+                        alpha: 1,
+                        color: ['#e879f9', '#c084fc', '#4ade80', '#ffffff'][Math.floor(Math.random() * 4)]
+                    });
+                }
+            });
+
+            // Toggle Button & Preferences
+            const migiBtn = document.getElementById('migi-btn');
+            const migiDot = document.getElementById('migi-status-dot');
+            let isMigiActive = localStorage.getItem('migi_enabled') !== 'false';
+
+            function updateMigiVisibility() {
+                if (isMigiActive) {
+                    mCanvas.style.display = 'block';
+                    if (migiDot) {
+                        migiDot.style.background = '#4ade80';
+                        migiDot.style.boxShadow = '0 0 6px #4ade80';
+                    }
+                    if (migiBtn) migiBtn.style.opacity = '1';
+                } else {
+                    mCanvas.style.display = 'none';
+                    if (migiDot) {
+                        migiDot.style.background = '#ef4444';
+                        migiDot.style.boxShadow = 'none';
+                    }
+                    if (migiBtn) migiBtn.style.opacity = '0.5';
+                }
+            }
+
+            if (migiBtn) {
+                migiBtn.addEventListener('click', () => {
+                    isMigiActive = !isMigiActive;
+                    localStorage.setItem('migi_enabled', isMigiActive ? 'true' : 'false');
+                    updateMigiVisibility();
+                });
+            }
+            updateMigiVisibility();
+
+            function updateMigi() {
+                if (!isMigiActive) {
+                    requestAnimationFrame(updateMigi);
+                    return;
+                }
+                mctx.clearRect(0, 0, width, height);
+
+                // Migi follows slightly below & behind the mouse cursor pointer
+                const targetFollowX = mouseX + 18;
+                const targetFollowY = mouseY + 40;
+
+                const dx = targetFollowX - migiX;
+                const dy = targetFollowY - migiY;
+                const dist = Math.hypot(dx, dy);
+
+                if (state === 'POUNCING') {
+                    pounceTimer -= 0.08;
+                    if (pounceTimer <= 0) state = 'IDLE';
+                } else if (dist > 6) {
+                    state = 'RUNNING';
+                    // Gentle, slow crawling speed
+                    const speed = Math.min(dist * 0.045, 3.5);
+                    migiX += Math.cos(Math.atan2(dy, dx)) * speed;
+                    migiY += Math.sin(Math.atan2(dy, dx)) * speed;
+                    runCycle += 0.12;
+                } else {
+                    state = 'IDLE';
+                    runCycle += 0.03;
+                }
+
+                // Blinking
+                blinkTimer++;
+                if (blinkTimer > 150) {
+                    isBlinking = true;
+                    if (blinkTimer > 162) {
+                        isBlinking = false;
+                        blinkTimer = 0;
+                    }
+                }
+
+                // Particles
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.x += p.vx || 0;
+                    p.y += p.vy || 0;
+                    p.alpha -= 0.04;
+                    if (p.alpha <= 0) {
+                        particles.splice(i, 1);
+                        continue;
+                    }
+                    mctx.save();
+                    mctx.globalAlpha = p.alpha;
+                    mctx.fillStyle = p.color;
+                    mctx.beginPath();
+                    mctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    mctx.fill();
+                    mctx.restore();
+                }
+
+                // UPRIGHT POSTURE: Head and eye ALWAYS point UP
+                const swayAngle = Math.sin(runCycle * 0.8) * 0.08;
+                mctx.save();
+                mctx.translate(migiX, migiY);
+                mctx.rotate(swayAngle);
+
+                if (state === 'POUNCING') {
+                    const stretch = 1 + Math.sin(pounceTimer * Math.PI) * 0.35;
+                    mctx.scale(1, stretch);
+                }
+
+                // Shadow
+                mctx.save();
+                mctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+                mctx.filter = 'blur(4px)';
+                mctx.beginPath();
+                mctx.ellipse(0, 16, 14, 6, 0, 0, Math.PI * 2);
+                mctx.fill();
+                mctx.restore();
+
+                // 1. Cute Animated Running Tentacle Feet (CursorCat walking legs!)
+                const step1 = Math.sin(runCycle) * 9;
+                const step2 = Math.cos(runCycle) * 9;
+
+                mctx.strokeStyle = '#c49a75';
+                mctx.lineWidth = 3;
+                mctx.lineCap = 'round';
+
+                mctx.beginPath();
+                mctx.moveTo(-10, -5);
+                mctx.lineTo(-17, -11 + step1);
+                mctx.moveTo(10, -5);
+                mctx.lineTo(17, -11 - step1);
+                mctx.stroke();
+
+                mctx.beginPath();
+                mctx.moveTo(-8, 12);
+                mctx.lineTo(-15, 17 + step2);
+                mctx.moveTo(8, 12);
+                mctx.lineTo(15, 17 - step2);
+                mctx.stroke();
+
+                // 2. Cute Migi Soft Body
+                const bodyGrad = mctx.createRadialGradient(-2, -4, 2, 0, 0, 20);
+                bodyGrad.addColorStop(0, '#fff3c4');
+                bodyGrad.addColorStop(0.35, '#fbe4c8');
+                bodyGrad.addColorStop(0.85, '#e2bd9a');
+                bodyGrad.addColorStop(1, '#c49a75');
+
+                mctx.beginPath();
+                mctx.moveTo(-14, 16);
+                mctx.bezierCurveTo(-18, 4, -14, -10, -6, -18);
+                mctx.bezierCurveTo(-2, -26, 2, -26, 6, -18);
+                mctx.bezierCurveTo(14, -10, 18, 4, 14, 16);
+                mctx.bezierCurveTo(6, 22, -6, 22, -14, 16);
+                mctx.closePath();
+
+                mctx.fillStyle = bodyGrad;
+                mctx.fill();
+                mctx.strokeStyle = '#9a6c47';
+                mctx.lineWidth = 1.6;
+                mctx.stroke();
+
+                // 3. Eyestalk reaching upward
+                const stalkFlex = Math.sin(runCycle * 0.8) * 3;
+                mctx.beginPath();
+                mctx.moveTo(-3, -18);
+                mctx.bezierCurveTo(-4 + stalkFlex, -26, -2 + stalkFlex, -34, 0, -38);
+                mctx.bezierCurveTo(2 + stalkFlex, -34, 4 + stalkFlex, -26, 3, -18);
+                mctx.fillStyle = '#fbe4c8';
+                mctx.fill();
+                mctx.strokeStyle = '#9a6c47';
+                mctx.lineWidth = 1.4;
+                mctx.stroke();
+
+                // 4. Big Eye watching the Cursor Arrow
+                const eyeY = -40;
+                const eyeR = 9.5;
+
+                const relDx = mouseX - migiX;
+                const relDy = mouseY - (migiY + eyeY);
+                const eyeDist = Math.hypot(relDx, relDy) || 1;
+                const lookX = (relDx / eyeDist) * 3.8;
+                const lookY = eyeY + (relDy / eyeDist) * 3.8;
+
+                mctx.beginPath();
+                if (isBlinking) {
+                    mctx.ellipse(0, eyeY, eyeR, 1.2, 0, 0, Math.PI * 2);
+                    mctx.fillStyle = '#9a6c47';
+                    mctx.fill();
+                } else {
+                    mctx.ellipse(0, eyeY, eyeR, eyeR * 0.95, 0, 0, Math.PI * 2);
+                    mctx.fillStyle = '#ffffff';
+                    mctx.fill();
+                    mctx.strokeStyle = '#5c3a21';
+                    mctx.lineWidth = 1.5;
+                    mctx.stroke();
+
+                    const irisGrad = mctx.createRadialGradient(lookX - 1, lookY - 1, 1, lookX, lookY, 5);
+                    irisGrad.addColorStop(0, '#f59e0b');
+                    irisGrad.addColorStop(0.6, '#b45309');
+                    irisGrad.addColorStop(1, '#451a03');
+
+                    mctx.beginPath();
+                    mctx.arc(lookX, lookY, state === 'POUNCING' ? 5.5 : 4.2, 0, Math.PI * 2);
+                    mctx.fillStyle = irisGrad;
+                    mctx.fill();
+
+                    mctx.beginPath();
+                    mctx.arc(lookX, lookY, state === 'POUNCING' ? 2.8 : 2.0, 0, Math.PI * 2);
+                    mctx.fillStyle = '#000000';
+                    mctx.fill();
+
+                    mctx.beginPath();
+                    mctx.arc(lookX - 1.5, lookY - 1.5, 1.4, 0, Math.PI * 2);
+                    mctx.fillStyle = '#ffffff';
+                    mctx.fill();
+                }
+
+                // 5. Cute Expression & Blush
+                mctx.beginPath();
+                mctx.arc(0, 2, 4, 0.2, Math.PI - 0.2, false);
+                mctx.strokeStyle = '#7c2d12';
+                mctx.lineWidth = 1.4;
+                mctx.stroke();
+
+                mctx.beginPath();
+                mctx.arc(-7, 2, 2.2, 0, Math.PI * 2);
+                mctx.arc(7, 2, 2.2, 0, Math.PI * 2);
+                mctx.fillStyle = 'rgba(244, 63, 94, 0.35)';
+                mctx.fill();
+
+                mctx.restore();
+
+                requestAnimationFrame(updateMigi);
+            }
+
+            updateMigi();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initCursorMigi);
+        } else {
+            initCursorMigi();
+        }
+    </script>
+    <!-- FIXED BOTTOM RIGHT CORNER SITE BADGE -->
+    <a href="athulkrishhh.html" class="site-badge-link fixed-site-badge" title="athul website badge">
+        <img src="athul-badge.png" alt="athul website badge" class="site-badge-img">
+    </a>
+</body>
+
+</html>
